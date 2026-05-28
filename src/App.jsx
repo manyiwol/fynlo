@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 import AdminDashboard from "./pages/AdminDashboard";
@@ -85,7 +85,7 @@ function App() {
     setRole(null);
     setLoading(false);
     setRoleLoading(false);
-    window.location.href = `${import.meta.env.BASE_URL}login`;
+    window.location.href = `${import.meta.env.BASE_URL}#/login`;
   };
 
   if (loading || roleLoading) return (
@@ -114,7 +114,7 @@ function App() {
     : "/dashboard";
 
   return (
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <HashRouter>
       <Routes>
         <Route path="/login" element={!session ? <Login /> : <Navigate to={defaultPath} />} />
         <Route path="/dashboard" element={
@@ -135,7 +135,7 @@ function App() {
         } />
         <Route path="*" element={<Navigate to={session ? defaultPath : "/login"} />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
