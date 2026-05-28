@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Not found — Redirecting</title>
+    <meta http-equiv="refresh" content="0; url=./#/" />
+    <script>
+      (function () {
+        try {
+          // Build a hash URL from the original path so the SPA can handle it
+          var path = location.pathname + location.search + location.hash;
+          // Redirect relatively so this works for project pages (e.g. /user/repo/)
+          location.replace('./#' + path);
+        } catch (e) {
+          // Fallback to root hash
+          location.replace('./#/');
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <p>Page not found — redirecting to the app...</p>
+  </body>
+</html>
