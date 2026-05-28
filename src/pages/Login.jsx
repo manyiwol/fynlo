@@ -29,11 +29,16 @@ export default function Login() {
       if (error) { setError(error.message); setLoading(false); return; }
 
       if (data?.user) {
-        await supabase.from("profiles").update({
-          full_name: fullName,
-          role: "user",
-          account_status: "pending",
-        }).eq("user_id", data.user.id);
+        const { error: profileError } = await supabase.from("profiles").upsert(
+          {
+            user_id: data.user.id,
+            full_name: fullName,
+            role: "user",
+            account_status: "pending",
+          },
+          { onConflict: "user_id" }
+        );
+        if (profileError) console.error("profile upsert error:", profileError);
       }
 
       setLoading(false);
@@ -67,17 +72,37 @@ export default function Login() {
       return;
     }
 
-    const { data: profile, error: profileError } = await supabase
+    let { data: profile, error: profileError } = await supabase
       .from("profiles")
       .select("role, account_status")
       .eq("user_id", data.user.id)
-      .single();
+      .maybeSingle();
 
-    if (profileError || !profile) {
-      setError("Unable to fetch account details. Make sure your profile exists in the database.");
-      await supabase.auth.signOut();
+    if (profileError) {
+      console.error("fetch profile error:", profileError);
+      setError("Unable to fetch account details. Please contact support.");
       setLoading(false);
       return;
+    }
+
+    if (!profile) {
+      const { error: createError } = await supabase.from("profiles").upsert(
+        {
+          user_id: data.user.id,
+          role: "user",
+          account_status: "active",
+        },
+        { onConflict: "user_id" }
+      );
+
+      if (createError) {
+        console.error("create profile fallback error:", createError);
+        setError("Unable to create user profile. Please contact support.");
+        setLoading(false);
+        return;
+      }
+
+      profile = { role: "user", account_status: "active" };
     }
 
     // ✅ Superadmin bypasses account_status checks

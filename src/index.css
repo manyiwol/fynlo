@@ -1,0 +1,136 @@
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden;
+  background: #060b18;
+  color: #e2e8f0;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+button, input, textarea, select {
+  font: inherit;
+}
+
+img, svg, canvas, video {
+  max-width: 100%;
+  height: auto;
+}
+
+.responsive-table {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.responsive-table table {
+  width: 100%;
+  min-width: 100%;
+}
+
+@media (max-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-el,
+  .page-container,
+  .content-el,
+  .table-card,
+  .chart-card,
+  .card,
+  .section,
+  .summary,
+  .form-card {
+    padding: 1rem !important;
+  }
+
+  .flex-row,
+  .topbar-el,
+  .header-el,
+  .row,
+  .stats-grid,
+  .charts-row,
+  .section-grid {
+    flex-direction: column !important;
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+
+  .sidebar-el {
+    transform: translateX(-100%) !important;
+    width: 100% !important;
+  }
+
+  .sidebar-el.open {
+    transform: translateX(0) !important;
+  }
+
+  .main-el {
+    margin-left: 0 !important;
+    padding: 1rem !important;
+    width: 100% !important;
+  }
+
+  .mobile-nav-toggle,
+  .hamburger-btn {
+    display: flex !important;
+  }
+
+  .overlay-bg {
+    display: block !important;
+  }
+
+  .hide-on-mobile {
+    display: none !important;
+  }
+
+  .full-width-mobile {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (max-width: 520px) {
+  .stats-grid,
+  .charts-row,
+  .table-card,
+  .content-el {
+    width: 100% !important;
+  }
+
+  .topbar-el {
+    padding: 0.75rem !important;
+  }
+
+  .pageTitle,
+  .headerTitle,
+  .chartTitle {
+    font-size: 1.1rem !important;
+  }
+
+  .pageSub,
+  .statusBadge,
+  .viewAllBtn,
+  .button {
+    font-size: 0.9rem !important;
+  }
+}

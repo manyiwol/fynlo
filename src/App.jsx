@@ -19,7 +19,7 @@ function App() {
       .from("profiles")
       .select("role")
       .eq("user_id", userId)
-      .single();
+      .maybeSingle();
     if (error) console.error("fetchRole error:", error);
     setRole(data?.role || "user");
     setRoleLoading(false);
@@ -75,9 +75,17 @@ function App() {
   }, []);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout error:", error);
+      return;
+    }
+
+    setSession(null);
     setRole(null);
-    window.location.href = "/login";
+    setLoading(false);
+    setRoleLoading(false);
+    window.location.href = `${import.meta.env.BASE_URL}login`;
   };
 
   if (loading || roleLoading) return (
@@ -106,7 +114,7 @@ function App() {
     : "/dashboard";
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <Routes>
         <Route path="/login" element={!session ? <Login /> : <Navigate to={defaultPath} />} />
         <Route path="/dashboard" element={
