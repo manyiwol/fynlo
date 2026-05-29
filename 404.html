@@ -8,13 +8,15 @@
     <script>
       (function () {
         try {
-          // Build a hash URL from the original path so the SPA can handle it
-          var path = location.pathname + location.search + location.hash;
-          // Redirect relatively so this works for project pages (e.g. /user/repo/)
-          location.replace('./#' + path);
+          // Build a hash URL from the original path so the SPA can handle it.
+          // For GitHub Pages project sites, strip the repository base path
+          // before applying hash routing.
+          var path = location.pathname + location.search;
+          var normalized = path.replace(/^\/[^\/]+/, "") || "/";
+          location.replace("./#" + normalized + location.hash);
         } catch (e) {
           // Fallback to root hash
-          location.replace('./#/');
+          location.replace("./#/");
         }
       })();
     </script>
